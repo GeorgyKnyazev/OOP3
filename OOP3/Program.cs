@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace OOP3
 {
@@ -15,7 +13,7 @@ namespace OOP3
             const ConsoleKey UnbanPlayerInMenu = ConsoleKey.D4;
             const ConsoleKey ExitInMenu = ConsoleKey.D5;
 
-            DataBase players = new DataBase();
+            Database players = new Database();
 
             bool isWorking = true;
 
@@ -74,7 +72,7 @@ namespace OOP3
         public bool IsActive { get; set; }
     }
 
-    class DataBase
+    class Database
     {
         private int idCount = 1;
         List<Player> list = new List<Player>();
@@ -98,7 +96,7 @@ namespace OOP3
             list.Add(player);                 
         }
 
-        public static void GetLevel(out int veriableForinItialization, string text)
+        private void GetLevel(out int veriableForinItialization, string text)
         {
             string userInput;
 
@@ -113,7 +111,7 @@ namespace OOP3
             }
         }
 
-        public static void GetNicName(out string veriableForinItialization, string text)
+        private void GetNicName(out string veriableForinItialization, string text)
         {
             string userInput;
 
@@ -124,7 +122,7 @@ namespace OOP3
             veriableForinItialization = userInput;
         }
 
-        public static void GetIsActive(out bool veriableForinItialization, string text)
+        private void GetIsActive(out bool veriableForinItialization, string text)
         {
             string userInput;
 
