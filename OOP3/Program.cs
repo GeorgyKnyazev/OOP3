@@ -33,19 +33,19 @@ namespace OOP3
                 switch ( consoleKeyInfo.Key )
                 {
                     case AddPlayerInMenu:
-                        players.Add();
+                        players.AddPlayer();
                         break;
 
                     case ShowAllPlayersInMenu:
-                        players.ShowALL();
+                        players.ShowALLPlayers();
                         break;
 
                     case BanPlayerInMenu:
-                        players.Ban();
+                        players.BanPlayer();
                         break;
 
                     case UnbanPlayerInMenu:
-                        players.UnBan();
+                        players.UnBanlaPlayer();
                         break;
 
                     case ExitInMenu:
@@ -76,47 +76,29 @@ namespace OOP3
 
     class DataBase
     {
+        private int idCount = 1;
         List<Player> list = new List<Player>();
 
-        public void Add()
+        public void AddPlayer()
         {
             Console.Clear();
 
-            int tempId;
             string tempNicName;
             int tempLevel;
             bool tempActive;
-            string tempIdText = "Введите ID игрока: ";
             string tempNicNameText = "Введите Никнейм игрока: ";
             string tempLevelText = "Введите уровень игрока: ";
             string tempAativeText = "Ввдите false если игрок не активен или true если игрок активен: ";
-            bool doesMatchID = false;
 
-            TakeValue(out tempId, tempIdText);
-            TakeValue(out tempNicName, tempNicNameText);
-            TakeValue(out tempLevel, tempLevelText);
-            TakeValue(out tempActive, tempAativeText);
+            GetNicName(out tempNicName, tempNicNameText);
+            GetLevel(out tempLevel, tempLevelText);
+            GetIsActive(out tempActive, tempAativeText);
 
-            Player player = new Player(tempId, tempNicName, tempLevel, tempActive);
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (player.ID == list[i].ID)
-                {
-                    Console.WriteLine($"Игрок с номером {tempId} же есть");
-                    Console.ReadKey();
-                    doesMatchID = true;
-                    break;
-                }
-            }
-
-            if (doesMatchID == false)
-            {
-                list.Add(player);
-            }                     
+            Player player = new Player(idCount++, tempNicName, tempLevel, tempActive);
+            list.Add(player);                 
         }
 
-        static void TakeValue(out int veriableForinItialization, string text)
+        public static void GetLevel(out int veriableForinItialization, string text)
         {
             string userInput;
 
@@ -131,7 +113,7 @@ namespace OOP3
             }
         }
 
-        static void TakeValue(out string veriableForinItialization, string text)
+        public static void GetNicName(out string veriableForinItialization, string text)
         {
             string userInput;
 
@@ -140,10 +122,9 @@ namespace OOP3
             userInput = Console.ReadLine();
 
             veriableForinItialization = userInput;
-
         }
 
-        static void TakeValue(out bool veriableForinItialization, string text)
+        public static void GetIsActive(out bool veriableForinItialization, string text)
         {
             string userInput;
 
@@ -158,7 +139,7 @@ namespace OOP3
             }
         }
 
-        public void ShowALL()
+        public void ShowALLPlayers()
         {
             Console.Clear();
 
@@ -170,12 +151,12 @@ namespace OOP3
             Console.ReadKey();
         }
 
-        public void Ban()
+        public void BanPlayer()
         {
             int userInputBanId;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
-            TakeValue(out userInputBanId, userInputBanText);
+            GetLevel(out userInputBanId, userInputBanText);
 
             foreach (Player player in list)
             {
@@ -186,12 +167,12 @@ namespace OOP3
             }
         }
 
-        public void UnBan()
+        public void UnBanlaPlayer()
         {
             int userInputBanId;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
-            TakeValue(out userInputBanId, userInputBanText);
+            GetLevel(out userInputBanId, userInputBanText);
 
             foreach (Player player in list)
             {
