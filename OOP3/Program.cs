@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OOP3
 {
@@ -13,7 +14,7 @@ namespace OOP3
             const ConsoleKey UnbanPlayerInMenu = ConsoleKey.D4;
             const ConsoleKey ExitInMenu = ConsoleKey.D5;
 
-            Database players = new Database();
+            Database database = new Database();
 
             bool isWorking = true;
 
@@ -31,19 +32,19 @@ namespace OOP3
                 switch ( consoleKeyInfo.Key )
                 {
                     case AddPlayerInMenu:
-                        players.AddPlayer();
+                        database.AddPlayer();
                         break;
 
                     case ShowAllPlayersInMenu:
-                        players.ShowALLPlayers();
+                        database.ShowALLPlayers();
                         break;
 
                     case BanPlayerInMenu:
-                        players.BanPlayer();
+                        database.BanPlayer();
                         break;
 
                     case UnbanPlayerInMenu:
-                        players.UnBanlaPlayer();
+                        database.UnBanlaPlayer();
                         break;
 
                     case ExitInMenu:
@@ -69,34 +70,39 @@ namespace OOP3
         public string NicName { get; private set; }
         public int Level { get; private set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; private set; }
+
+        public void SetIsActive(bool value)
+        {
+            IsActive = value;
+        }
     }
 
     class Database
     {
-        private int idCount = 1;
-        List<Player> list = new List<Player>();
+        private int idCount = 0;
+        private List<Player> _list = new List<Player>();
 
         public void AddPlayer()
         {
             Console.Clear();
-
-            string tempNicName;
-            int tempLevel;
-            bool tempActive;
+             
+            string tempNicName = "";
+            int tempLevel = 0;
+            bool tempActive = false;
             string tempNicNameText = "Введите Никнейм игрока: ";
             string tempLevelText = "Введите уровень игрока: ";
             string tempAativeText = "Ввдите false если игрок не активен или true если игрок активен: ";
 
-            GetNicName(out tempNicName, tempNicNameText);
-            GetLevel(out tempLevel, tempLevelText);
-            GetIsActive(out tempActive, tempAativeText);
+            tempNicName = GetNicName(tempNicName, tempNicNameText);
+            tempLevel = GetLevel(tempLevel, tempLevelText);
+            tempActive = GetIsActive(tempActive, tempAativeText);
 
-            Player player = new Player(idCount++, tempNicName, tempLevel, tempActive);
-            list.Add(player);                 
+            Player player = new Player(++idCount, tempNicName, tempLevel, tempActive);
+            _list.Add(player);                 
         }
 
-        private void GetLevel(out int veriableForinItialization, string text)
+        private int GetLevel(int veriableForinItialization, string text)
         {
             string userInput;
 
@@ -109,20 +115,19 @@ namespace OOP3
             {
                 Console.WriteLine("Вы ввели неправильное значение");
             }
+            return veriableForinItialization;
         }
 
-        private void GetNicName(out string veriableForinItialization, string text)
+        private string GetNicName(string veriableForinItialization, string text)
         {
-            string userInput;
-
             Console.Write(text);
 
-            userInput = Console.ReadLine();
+            veriableForinItialization = Console.ReadLine();
 
-            veriableForinItialization = userInput;
+            return veriableForinItialization;
         }
 
-        private void GetIsActive(out bool veriableForinItialization, string text)
+        private bool GetIsActive(bool veriableForinItialization, string text)
         {
             string userInput;
 
@@ -135,13 +140,14 @@ namespace OOP3
             {
                 Console.WriteLine("Вы ввели неправильное значение");
             }
+            return veriableForinItialization;
         }
 
         public void ShowALLPlayers()
         {
             Console.Clear();
 
-            foreach (Player player in list)
+            foreach (Player player in _list)
             {
                 Console.WriteLine(player.ID + " " + player.NicName + " " + player.Level + " " + player.IsActive);
             }
@@ -151,32 +157,32 @@ namespace OOP3
 
         public void BanPlayer()
         {
-            int userInputBanId;
+            int userInputBanId = 0;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
-            GetLevel(out userInputBanId, userInputBanText);
+            userInputBanId = GetLevel(userInputBanId, userInputBanText);
 
-            foreach (Player player in list)
+            foreach (Player player in _list)
             {
                 if (player.ID == userInputBanId)
                 {
-                    player.IsActive = false;
+                    player.SetIsActive(false);
                 }
-            }
+            } 
         }
 
         public void UnBanlaPlayer()
         {
-            int userInputBanId;
+            int userInputBanId = 0;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
-            GetLevel(out userInputBanId, userInputBanText);
+            userInputBanId = GetLevel(userInputBanId, userInputBanText);
 
-            foreach (Player player in list)
+            foreach (Player player in _list)
             {
                 if (player.ID == userInputBanId)
                 {
-                    player.IsActive = true;
+                    player.SetIsActive(true);
                 }
             }
         }
