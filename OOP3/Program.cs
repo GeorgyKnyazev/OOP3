@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 
 namespace OOP3
@@ -44,7 +45,7 @@ namespace OOP3
                         break;
 
                     case UnbanPlayerInMenu:
-                        database.UnBanlaPlayer();
+                        database.UnbanlaPlayer();
                         break;
 
                     case ExitInMenu:
@@ -72,9 +73,14 @@ namespace OOP3
 
         public bool IsActive { get; private set; }
 
-        public void SetIsActive(bool value)
+        public void SetIsActiveTrue()
         {
-            IsActive = value;
+            IsActive = true;
+        }
+
+        public void SetIsActiveFalse()
+        {
+            IsActive = false;
         }
     }
 
@@ -104,17 +110,21 @@ namespace OOP3
 
         private int GetLevel(int veriableForinItialization, string text)
         {
+            bool result;
             string userInput;
 
             Console.Write(text);
 
             userInput = Console.ReadLine();
 
-            if (int.TryParse(userInput, out veriableForinItialization)) ;
-            else
+            result = int.TryParse(userInput , out veriableForinItialization);
+
+            if (result == false)
             {
                 Console.WriteLine("Вы ввели неправильное значение");
+                Console.ReadKey();
             }
+          
             return veriableForinItialization;
         }
 
@@ -129,17 +139,21 @@ namespace OOP3
 
         private bool GetIsActive(bool veriableForinItialization, string text)
         {
+            bool result;
             string userInput;
 
             Console.Write(text);
 
             userInput = Console.ReadLine();
 
-            if (bool.TryParse(userInput, out veriableForinItialization)) ;
-            else
+            result = bool.TryParse(userInput, out veriableForinItialization);
+
+            if (result == false)
             {
                 Console.WriteLine("Вы ввели неправильное значение");
+                Console.ReadKey();
             }
+
             return veriableForinItialization;
         }
 
@@ -157,36 +171,65 @@ namespace OOP3
 
         public void BanPlayer()
         {
+            Console.Clear();
+
+            Player player = null;
+
+            bool isPlayerInList;
             int userInputBanId = 0;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
             userInputBanId = GetLevel(userInputBanId, userInputBanText);
 
-            foreach (Player player in _list)
+            isPlayerInList = TryGetPlayer(userInputBanId, out player);
+
+            if(isPlayerInList == true)
             {
-                if (player.ID == userInputBanId)
-                {
-                    player.SetIsActive(false);
-                }
-            } 
+                player.SetIsActiveFalse();
+            }
         }
 
-        public void UnBanlaPlayer()
+        public void UnbanlaPlayer()
         {
+            Console.Clear();
+
+            Player player = null;
+
+            bool isPlayerInList;
             int userInputBanId = 0;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
             userInputBanId = GetLevel(userInputBanId, userInputBanText);
 
-            foreach (Player player in _list)
+            isPlayerInList = TryGetPlayer(userInputBanId, out player);
+
+            if (isPlayerInList == true)
             {
-                if (player.ID == userInputBanId)
+                player.SetIsActiveTrue();
+            }
+        }
+
+        private bool TryGetPlayer (int userInputBanId, out Player player)
+        {
+            player = null;
+            bool result = false;
+
+            foreach (Player players in _list)
+            {
+                if (players.ID == userInputBanId)
                 {
-                    player.SetIsActive(true);
+                    player = players;
+                    result = true;
+                }
+                else
+                {
+                    Console.WriteLine($"Игрока с {userInputBanId} ID Нет");
+                    Console.ReadKey();
                 }
             }
+            return result;
         }
     }
 
-   
+
 }
