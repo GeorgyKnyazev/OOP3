@@ -11,7 +11,8 @@ namespace OOP3
             const ConsoleKey ShowAllPlayersInMenu = ConsoleKey.D2;
             const ConsoleKey BanPlayerInMenu = ConsoleKey.D3;
             const ConsoleKey UnbanPlayerInMenu = ConsoleKey.D4;
-            const ConsoleKey ExitInMenu = ConsoleKey.D5;
+            const ConsoleKey DeletePlayerInMenu = ConsoleKey.D5;
+            const ConsoleKey ExitInMenu = ConsoleKey.D6;
 
             Database database = new Database();
 
@@ -24,6 +25,7 @@ namespace OOP3
                 Console.WriteLine($"Для вывода всех играков нажмите: {ShowAllPlayersInMenu}");
                 Console.WriteLine($"Для для блокировки игрока нажмите: {BanPlayerInMenu}");
                 Console.WriteLine($"Для для разбана игрока нажмите: {UnbanPlayerInMenu}");
+                Console.WriteLine($"Для удаления игрока нажмите: {DeletePlayerInMenu}");
                 Console.WriteLine($"Для выхода нажмите: {ExitInMenu}");
 
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();
@@ -44,6 +46,10 @@ namespace OOP3
 
                     case UnbanPlayerInMenu:
                         database.UnbanPlayer();
+                        break;
+
+                    case DeletePlayerInMenu:
+                        database.DeletePlayer();
                         break;
 
                     case ExitInMenu:
@@ -151,6 +157,25 @@ namespace OOP3
             if (isPlayerInList == true)
             {
                 player.SetIsBannedTrue();
+            }
+        }
+
+        public void DeletePlayer()
+        {
+            Console.Clear();
+            Player player = null;
+
+            bool isPlayerInList;
+            int userInputPlayerId = 0;
+            string userInputDeleteText = "Введите ID игрока которого хотите удалить:";
+
+            userInputPlayerId = GetLevel(userInputDeleteText);
+
+            isPlayerInList = TryGetPlayer(userInputPlayerId, out player);
+
+            if (isPlayerInList == true)
+            {
+                playerList.Remove(player);
             }
         }
 
