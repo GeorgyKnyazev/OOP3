@@ -43,7 +43,7 @@ namespace OOP3
                         break;
 
                     case UnbanPlayerInMenu:
-                        database.UnbanlaPlayer();
+                        database.UnbanPlayer();
                         break;
 
                     case ExitInMenu:
@@ -112,6 +112,7 @@ namespace OOP3
             {
                 Console.WriteLine(player.Id + " " + player.NicName + " " + player.Level + " " + player.IsBanned);
             }
+
             Console.ReadKey();
         }
 
@@ -134,7 +135,7 @@ namespace OOP3
             }
         }
 
-        public void UnbanlaPlayer()
+        public void UnbanPlayer()
         {
             Console.Clear();
             Player player = null;
@@ -169,6 +170,7 @@ namespace OOP3
                 Console.WriteLine("Вы ввели неправильное значение");
                 Console.ReadKey();
             }
+
             return number;
         }
 
@@ -198,6 +200,7 @@ namespace OOP3
                 Console.WriteLine("Вы ввели неправильное значение");
                 Console.ReadKey();
             }
+
             return isBanned;
         }
 
@@ -219,6 +222,7 @@ namespace OOP3
                     Console.ReadKey();
                 }
             }
+
             return result;
         }
     }
