@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Security.Cryptography.X509Certificates;
 
 namespace OOP3
 {
@@ -37,7 +35,7 @@ namespace OOP3
                         break;
 
                     case ShowAllPlayersInMenu:
-                        database.ShowALLPlayers();
+                        database.ShowAllPlayers();
                         break;
 
                     case BanPlayerInMenu:
@@ -53,7 +51,6 @@ namespace OOP3
                         break;
                 }
             }
-
         }
     }
 
@@ -61,152 +58,147 @@ namespace OOP3
     {
         public Player(int id, string nicName, int level, bool isActive)
         {
-            ID = id;
+            Id = id;
             NicName = nicName;
             Level = level;
-            IsActive = isActive;
+            IsBanned = isActive;
         }
 
-        public int ID { get; private set; }
+        public int Id { get; private set; }
         public string NicName { get; private set; }
         public int Level { get; private set; }
+        public bool IsBanned { get; private set; }
 
-        public bool IsActive { get; private set; }
-
-        public void SetIsActiveTrue()
+        public void SetIsBannedTrue()
         {
-            IsActive = true;
+            IsBanned = true;
         }
 
-        public void SetIsActiveFalse()
+        public void SetIsBannedFalse()
         {
-            IsActive = false;
+            IsBanned = false;
         }
     }
 
     class Database
     {
-        private int idCount = 0;
-        private List<Player> _list = new List<Player>();
+        private int _idCount = 0;
+        private List<Player> playerList = new List<Player>();
 
         public void AddPlayer()
         {
             Console.Clear();
              
-            string tempNicName = "";
-            int tempLevel = 0;
-            bool tempActive = false;
+            string nicName;
+            int level;
+            bool isBanned;
             string tempNicNameText = "Введите Никнейм игрока: ";
             string tempLevelText = "Введите уровень игрока: ";
             string tempAativeText = "Ввдите false если игрок не активен или true если игрок активен: ";
 
-            tempNicName = GetNicName(tempNicName, tempNicNameText);
-            tempLevel = GetLevel(tempLevel, tempLevelText);
-            tempActive = GetIsActive(tempActive, tempAativeText);
+            nicName = GetNicName(tempNicNameText);
+            level = GetLevel(tempLevelText);
+            isBanned = GetIsBanned(tempAativeText);
 
-            Player player = new Player(++idCount, tempNicName, tempLevel, tempActive);
-            _list.Add(player);                 
+            Player player = new Player(++_idCount, nicName, level, isBanned);
+            playerList.Add(player);                 
         }
 
-        private int GetLevel(int veriableForinItialization, string text)
-        {
-            bool result;
-            string userInput;
-
-            Console.Write(text);
-
-            userInput = Console.ReadLine();
-
-            result = int.TryParse(userInput , out veriableForinItialization);
-
-            if (result == false)
-            {
-                Console.WriteLine("Вы ввели неправильное значение");
-                Console.ReadKey();
-            }
-          
-            return veriableForinItialization;
-        }
-
-        private string GetNicName(string veriableForinItialization, string text)
-        {
-            Console.Write(text);
-
-            veriableForinItialization = Console.ReadLine();
-
-            return veriableForinItialization;
-        }
-
-        private bool GetIsActive(bool veriableForinItialization, string text)
-        {
-            bool result;
-            string userInput;
-
-            Console.Write(text);
-
-            userInput = Console.ReadLine();
-
-            result = bool.TryParse(userInput, out veriableForinItialization);
-
-            if (result == false)
-            {
-                Console.WriteLine("Вы ввели неправильное значение");
-                Console.ReadKey();
-            }
-
-            return veriableForinItialization;
-        }
-
-        public void ShowALLPlayers()
+        public void ShowAllPlayers()
         {
             Console.Clear();
 
-            foreach (Player player in _list)
+            foreach (Player player in playerList)
             {
-                Console.WriteLine(player.ID + " " + player.NicName + " " + player.Level + " " + player.IsActive);
+                Console.WriteLine(player.Id + " " + player.NicName + " " + player.Level + " " + player.IsBanned);
             }
-
             Console.ReadKey();
         }
 
         public void BanPlayer()
         {
             Console.Clear();
-
             Player player = null;
 
             bool isPlayerInList;
-            int userInputBanId = 0;
+            int userInputPlayerId = 0;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
-            userInputBanId = GetLevel(userInputBanId, userInputBanText);
+            userInputPlayerId = GetLevel(userInputBanText);
 
-            isPlayerInList = TryGetPlayer(userInputBanId, out player);
+            isPlayerInList = TryGetPlayer(userInputPlayerId, out player);
 
             if(isPlayerInList == true)
             {
-                player.SetIsActiveFalse();
+                player.SetIsBannedFalse();
             }
         }
 
         public void UnbanlaPlayer()
         {
             Console.Clear();
-
             Player player = null;
 
             bool isPlayerInList;
-            int userInputBanId = 0;
+            int userInputPlayerId = 0;
             string userInputBanText = "Введите ID игрока которого хотите забанить:";
 
-            userInputBanId = GetLevel(userInputBanId, userInputBanText);
+            userInputPlayerId = GetLevel(userInputBanText);
 
-            isPlayerInList = TryGetPlayer(userInputBanId, out player);
+            isPlayerInList = TryGetPlayer(userInputPlayerId, out player);
 
             if (isPlayerInList == true)
             {
-                player.SetIsActiveTrue();
+                player.SetIsBannedTrue();
             }
+        }
+
+        private int GetLevel(string text)
+        {
+            int number;
+            bool result;
+            string userInput;
+
+            Console.Write(text);
+
+            userInput = Console.ReadLine();
+            result = int.TryParse(userInput, out number);
+
+            if (result == false)
+            {
+                Console.WriteLine("Вы ввели неправильное значение");
+                Console.ReadKey();
+            }
+            return number;
+        }
+
+        private string GetNicName(string text)
+        {
+            string nicName;
+
+            Console.Write(text);
+            nicName = Console.ReadLine();
+
+            return nicName;
+        }
+
+        private bool GetIsBanned(string text)
+        {
+            bool isBanned;
+            bool result;
+            string userInput;
+
+            Console.Write(text);
+
+            userInput = Console.ReadLine();
+            result = bool.TryParse(userInput, out isBanned);
+
+            if (result == false)
+            {
+                Console.WriteLine("Вы ввели неправильное значение");
+                Console.ReadKey();
+            }
+            return isBanned;
         }
 
         private bool TryGetPlayer (int userInputBanId, out Player player)
@@ -214,9 +206,9 @@ namespace OOP3
             player = null;
             bool result = false;
 
-            foreach (Player players in _list)
+            foreach (Player players in playerList)
             {
-                if (players.ID == userInputBanId)
+                if (players.Id == userInputBanId)
                 {
                     player = players;
                     result = true;
@@ -230,6 +222,4 @@ namespace OOP3
             return result;
         }
     }
-
-
 }
