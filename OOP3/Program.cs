@@ -75,12 +75,12 @@ namespace OOP3
         public int Level { get; private set; }
         public bool IsBanned { get; private set; }
 
-        public void SetIsBannedTrue()
+        public void Ban()
         {
             IsBanned = true;
         }
 
-        public void SetIsBannedFalse()
+        public void Unban()
         {
             IsBanned = false;
         }
@@ -89,7 +89,7 @@ namespace OOP3
     class Database
     {
         private int _idCount = 0;
-        private List<Player> playerList = new List<Player>();
+        private List<Player> _players = new List<Player>();
 
         public void AddPlayer()
         {
@@ -107,14 +107,14 @@ namespace OOP3
             isBanned = GetIsBanned(tempAativeText);
 
             Player player = new Player(++_idCount, nicName, level, isBanned);
-            playerList.Add(player);                 
+            _players.Add(player);                 
         }
 
         public void ShowAllPlayers()
         {
             Console.Clear();
 
-            foreach (Player player in playerList)
+            foreach (Player player in _players)
             {
                 Console.WriteLine(player.Id + " " + player.NicName + " " + player.Level + " " + player.IsBanned);
             }
@@ -137,7 +137,7 @@ namespace OOP3
 
             if(isPlayerInList == true)
             {
-                player.SetIsBannedFalse();
+                player.Unban();
             }
         }
 
@@ -156,7 +156,7 @@ namespace OOP3
 
             if (isPlayerInList == true)
             {
-                player.SetIsBannedTrue();
+                player.Ban();
             }
         }
 
@@ -175,7 +175,7 @@ namespace OOP3
 
             if (isPlayerInList == true)
             {
-                playerList.Remove(player);
+                _players.Remove(player);
             }
         }
 
@@ -234,7 +234,7 @@ namespace OOP3
             player = null;
             bool result = false;
 
-            foreach (Player players in playerList)
+            foreach (Player players in _players)
             {
                 if (players.Id == userInputBanId)
                 {
