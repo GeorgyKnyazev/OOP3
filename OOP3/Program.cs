@@ -181,20 +181,23 @@ namespace OOP3
 
         private int GetLevel(string text)
         {
-            int number;
-            bool result;
+            int number = 0;
+            bool result = false;
             string userInput;
 
-            Console.Write(text);
-
-            userInput = Console.ReadLine();
-            result = int.TryParse(userInput, out number);
-
-            if (result == false)
+            while(result == false)
             {
-                Console.WriteLine("Вы ввели неправильное значение");
-                Console.ReadKey();
-            }
+                Console.Write(text);
+
+                userInput = Console.ReadLine();
+                result = int.TryParse(userInput, out number);
+
+                if (result == false)
+                {
+                    Console.WriteLine("Вы ввели неправильное значение");
+                    Console.ReadKey();
+                }
+            }           
 
             return number;
         }
@@ -240,12 +243,13 @@ namespace OOP3
                 {
                     player = players;
                     result = true;
-                }
-                else
-                {
-                    Console.WriteLine($"Игрока с {userInputBanId} ID Нет");
-                    Console.ReadKey();
-                }
+                }               
+            }
+
+            if (result == false)
+            {
+                Console.WriteLine($"Игрока с {userInputBanId} ID Нет");
+                Console.ReadKey();
             }
 
             return result;
